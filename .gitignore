@@ -1,0 +1,41 @@
+# === Node ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === Environment files ===
+.env
+.env.*.local
+
+# === Logs ===
+logs
+*.log
+*.log.*
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+
+# === Build output ===
+dist/
+build/
+
+# === Vite/React specific ===
+.vite/
+.vscode/
+*.local
+
+# === Coverage ===
+coverage/
+
+# === Optional IDE settings ===
+.idea/
+*.swp
+*.swo
+*.swn
+
+# === Generated files ===
+*.tsbuildinfo
+.cache/
