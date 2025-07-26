@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // Change this to your backend URL when deployed
+  baseURL: "https://budgetbloom-q2kk.onrender.com/api", // Change this to your backend URL when deployed
   headers: {
     "Content-Type": "application/json",
   },
