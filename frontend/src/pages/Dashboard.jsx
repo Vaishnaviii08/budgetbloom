@@ -6,11 +6,14 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { FaWallet, FaMoneyBillWave, FaArrowDown } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import TransactionItem from "../components/TransactionComponent"; // make sure the path is correct
 
 const Dashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchTransactions();
@@ -139,7 +142,7 @@ const Dashboard = () => {
                     borderRadius: "10px",
                     fontWeight: "500",
                   }}
-                  href="/transaction"
+                  onClick={() => navigate("/transaction")}
                 >
                   + Add Transaction
                 </Button>
