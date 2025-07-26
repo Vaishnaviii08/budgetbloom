@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors({
     origin: 'http://localhost:5173', // your React frontend URL
+    origin: 'https://budgetbloom-pfm2-gft80iz8e-vaishnavis-projects-e980d454.vercel.app',
     credentials: true
 }));
 app.use(express.json());
