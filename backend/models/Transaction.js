@@ -60,11 +60,13 @@ const transactionSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  /*
   goalId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Goal",
     default: null,
   }
+    */
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

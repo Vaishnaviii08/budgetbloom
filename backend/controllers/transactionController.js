@@ -35,7 +35,7 @@ export const createTransaction = async (req, res) => {
       category: type === "expense" ? category : undefined,
       amount,
       emotion: type === "expense" ? emotion : undefined,
-      goalId: type === "saving" ? goalId : undefined,
+      //goalId: type === "saving" ? goalId : undefined,
       note,
       date: transactionDate,
     });
@@ -106,7 +106,7 @@ export const editTransaction = async (req, res) => {
   try {
     const transactionId = req.params.id;
     const userId = req.user.userId;
-    const { type, category, amount, emotion, note, date, goalId } = req.body;
+    const { type, category, amount, emotion, note, date } = req.body;
 
     //Check if transaction exists
     const transaction = await Transaction.findById(transactionId);
@@ -125,7 +125,7 @@ export const editTransaction = async (req, res) => {
     const originalAmount = transaction.amount;
     const originalType = transaction.type;
     const originalDate = new Date(transaction.date);
-    const originalGoalId = transaction.goalId;
+    //const originalGoalId = transaction.goalId;
 
     // Fetch user
     const user = await User.findById(userId);
@@ -190,7 +190,7 @@ export const editTransaction = async (req, res) => {
         transaction.category = category;
         transaction.emotion = emotion;
       } else if (type === "saving") {
-        transaction.goalId = goalId;
+        //transaction.goalId = goalId;
         transaction.set("category", undefined, { strict: false });
         transaction.set("emotion", undefined, { strict: false });
       }
