@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-import cron from "node-cron";
 
 const CATEGORY_OPTIONS = [
   'food', 'rent', 'transport', 'entertainment', 'shopping', 'bills', 'health', 'education', 'other',
@@ -16,7 +15,7 @@ const transactionSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ["income", "expense"],
+    enum: ["income", "expense", "saving"],
     required: true,
   },
   category: {
@@ -61,6 +60,11 @@ const transactionSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  goalId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Goal",
+    default: null,
+  }
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

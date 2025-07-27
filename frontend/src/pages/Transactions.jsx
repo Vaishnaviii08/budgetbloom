@@ -15,6 +15,7 @@ const Transactions = () => {
   const [category, setCategory] = useState("");
   const [note, setNote] = useState("");
   const [type, setType] = useState(""); // NEW: "expense" or "income"
+  const [goal, setGoal] = useState("");
 
   const handleEmotionSelect = (selectedEmotion) => {
     setEmotion(selectedEmotion);
@@ -22,13 +23,14 @@ const Transactions = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ date, type, emotion, amount, category, note });
+    console.log({ date, type, emotion, amount, category, note, goal });
 
     const transactionData = {type,
       amount: Number(amount),
       note,
       date,
       ...(type === "expense" && {category, emotion}),
+      ...(type === "expense" && {goal}),
     };
 
     try {
@@ -41,6 +43,7 @@ const Transactions = () => {
         setNote("");
         setCategory("");
         setEmotion("");
+        setGoal("");
         setDate(new Date());
       }
     } catch (error) {
@@ -78,6 +81,7 @@ const Transactions = () => {
               <option value="">Select Type</option>
               <option value="expense">Expense</option>
               <option value="income">Income</option>
+              <option value="savings">Savings</option>
             </Form.Select>
           </Form.Group>
 
@@ -112,6 +116,26 @@ const Transactions = () => {
                 <option value="shopping">Shopping</option>
                 <option value="health">Health</option>
                 <option value="education">Education</option>
+                <option value="other">Other</option>
+              </Form.Select>
+            </Form.Group>
+          )}
+
+          {/* Goal (only if savings) */}
+          {type === "savings" && (
+            <Form.Group className="mb-4" controlId="goalSelect">
+              <Form.Label style={{ fontWeight: "500" }}>Select Goal</Form.Label>
+              <Form.Select
+                value={goal}
+                onChange={(e) => setGoal(e.target.value)}
+                style={inputStyle}
+                required
+              >
+                <option value="">Choose a goal</option>
+                <option value="emergency">Emergency Fund</option>
+                <option value="vacation">Vacation</option>
+                <option value="education">Education</option>
+                <option value="retirement">Retirement</option>
                 <option value="other">Other</option>
               </Form.Select>
             </Form.Group>
