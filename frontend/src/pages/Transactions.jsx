@@ -14,8 +14,7 @@ const Transactions = () => {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [note, setNote] = useState("");
-  const [type, setType] = useState(""); // NEW: "expense" or "income"
-  //const [goal, setGoal] = useState("");
+  const [type, setType] = useState("");
 
   const handleEmotionSelect = (selectedEmotion) => {
     setEmotion(selectedEmotion);
@@ -30,7 +29,6 @@ const Transactions = () => {
       note,
       date,
       ...(type === "expense" && {category, emotion}),
-      //...(type === "savings" && {goal}),
     };
 
     try {
@@ -43,7 +41,6 @@ const Transactions = () => {
         setNote("");
         setCategory("");
         setEmotion("");
-        //setGoal("");
         setDate(new Date());
       }
     } catch (error) {
@@ -81,7 +78,6 @@ const Transactions = () => {
               <option value="">Select Type</option>
               <option value="expense">Expense</option>
               <option value="income">Income</option>
-              <option value="savings">Savings</option>
             </Form.Select>
           </Form.Group>
 

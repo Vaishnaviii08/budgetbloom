@@ -15,7 +15,7 @@ const transactionSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ["income", "expense", "saving"],
+    enum: ["income", "expense"],
     required: true,
   },
   category: {
@@ -59,14 +59,7 @@ const transactionSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-  },
-  /*
-  goalId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Goal",
-    default: null,
   }
-    */
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

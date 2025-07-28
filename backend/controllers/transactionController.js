@@ -6,10 +6,10 @@ export const createTransaction = async (req, res) => {
   try {
     const { type, category, amount, emotion, note, date } = req.body;
 
-    if (!type || !["income", "expense", "savings"].includes(type)) {
+    if (!type || !["income", "expense"].includes(type)) {
       return res
         .status(400)
-        .json({ error: "Type must be income or expense or saving" });
+        .json({ error: "Type must be income or expense" });
     }
 
     if (typeof amount !== "number" || amount < 0) {
@@ -35,7 +35,6 @@ export const createTransaction = async (req, res) => {
       category: type === "expense" ? category : undefined,
       amount,
       emotion: type === "expense" ? emotion : undefined,
-      //goalId: type === "saving" ? goalId : undefined,
       note,
       date: transactionDate,
     });
@@ -58,20 +57,6 @@ export const createTransaction = async (req, res) => {
     }
 
     await user.save();
-
-    /*
-    if (type === "saving" && goalId) {
-      const goal = await Goal.findById(goalId);
-      if (goal && goal.userId.toString() === req.user.userId) {
-        goal.currentAmount += amount;
-        goal.linkedTransactions.push(newTransaction._id);
-        if (goal.currentAmount >= goal.targetAmount) {
-          goal.status = "completed";
-        }
-        await goal.save();
-      }
-    }
-      */
 
     res.status(201).json({
       message: "Transaction added successfully",
@@ -125,7 +110,6 @@ export const editTransaction = async (req, res) => {
     const originalAmount = transaction.amount;
     const originalType = transaction.type;
     const originalDate = new Date(transaction.date);
-    //const originalGoalId = transaction.goalId;
 
     // Fetch user
     const user = await User.findById(userId);
@@ -149,28 +133,14 @@ export const editTransaction = async (req, res) => {
       if (isOriginalSameMonth) {
         user.monthlySpendings -= originalAmount;
       }
-    } else if (originalType === "saving") {
-      user.currentBalance += originalAmount;
-      user.monthlySpendings -= originalAmount;
-      /*
-      const prevGoal = await Goal.findById(originalGoalId);
-      if (prevGoal) {
-        prevGoal.currentAmount -= originalAmount;
-        prevGoal.linkedTransactions = prevGoal.linkedTransactions.filter(
-          id => id.toString() !== transaction._id.toString()
-        );
-        prevGoal.status = "active";
-        await prevGoal.save();
-      }
-        */
     }
 
     //Type-specific validation
     if (type) {
-      if (!["income", "expense", "savings"].includes(type)) {
+      if (!["income", "expense"].includes(type)) {
         return res
           .status(400)
-          .json({ error: "Type must be 'income' or 'expense' or 'savings." });
+          .json({ error: "Type must be 'income' or 'expense'." });
       }
 
       const prevCategory = transaction.category;
@@ -189,10 +159,6 @@ export const editTransaction = async (req, res) => {
         }
         transaction.category = category;
         transaction.emotion = emotion;
-      } else if (type === "saving") {
-        //transaction.goalId = goalId;
-        transaction.set("category", undefined, { strict: false });
-        transaction.set("emotion", undefined, { strict: false });
       }
     }
 
@@ -229,21 +195,6 @@ export const editTransaction = async (req, res) => {
       if (isNewSameMonth) {
         user.monthlySpendings += newAmount;
       }
-    } else if (newType === "saving") {
-      user.currentBalance -= newAmount;
-      /*
-      const newGoal = await Goal.findById(transaction.goalId);
-      if (newGoal) {
-        newGoal.currentAmount += newAmount;
-        if (!newGoal.linkedTransactions.includes(transaction._id)) {
-          newGoal.linkedTransactions.push(transaction._id);
-        }
-        if (newGoal.currentAmount >= newGoal.targetAmount) {
-          newGoal.status = "completed";
-        }
-        await newGoal.save();
-      }
-        */
     }
 
     await user.save();
@@ -298,24 +249,12 @@ export const deleteTransaction = async (req, res) => {
       if (isSameMonth) {
         user.monthlyEarnings -= amount;
       }
-    } else if (type === "expense" || type === "savings") {
+    } else if (type === "expense" ) {
       user.currentBalance += amount;
       if (isSameMonth) {
         user.monthlySpendings -= amount;
       }
-    } /*
-      if (type === "saving" && transaction.goalId) {
-  const goal = await Goal.findById(transaction.goalId);
-  if (goal) {
-    goal.currentAmount -= amount;
-    goal.linkedTransactions = goal.linkedTransactions.filter(
-      id => id.toString() !== transaction._id.toString()
-    );
-    goal.status = "active"; // in case it was completed
-    await goal.save();
-  }
-}
-    */
+    }
 
     await user.save();
 
